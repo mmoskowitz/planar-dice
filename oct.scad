@@ -58,18 +58,39 @@ module corner(angle=[atan(sqrt(2)),0,45], doclip=true){
    }
 }
 
-module two_digits(){
-	union(){
-		translate([-2,0,0]){child(0);}
-		translate([2,0,0]){child(1);}
+module center(planedir=0,numdir=0,clipdir=-135,front=true){
+	f = diameter/36;
+	r = front? 0 : 180;
+	rotate([0,r,0]){
+	halfplane(){
+		scale([f,f,f]){ 
+			rotate([0,0,-planedir]){
+			intersection(){
+			rotate([0,0,clipdir]){
+				square([diameter,diameter],center=false);
+			}
+			scale([1,sqrt(3),1]){
+			rotate([0,0,planedir]){
+			rotate([0,0,numdir]){
+			translate([-1.5,-2.5,0]){
+				child(0);
+			}
+			}
+			}
+			}
+			}
+		}
+	}
+	}
 	}
 }
 
-module ico_rec(){
+module oct_tri(){
 	plane(){
-		square([diameter * side, diameter * side * phi], center=true);
+		polygon(points=[[0,diameter/sqrt(3)],[diameter/sqrt(3),0],[-0.5 * diameter/sqrt(3), -0.5 * diameter/sqrt(3)]]);
 	}
 }
+
 
 one = [
 	[0,0],[0,1],[1,1],[1,4],[0,4],[1,5],[2,5],[2,1],[3,1],[3,0]
@@ -87,7 +108,7 @@ five = [
 	[0,1],[2,1],[2,2],[0,2],[0,4],[0,5],[3,5],[3,4],[1,4],[1,3],[2,3],[3,2],[3,1],[2,0],[1,0]
 ];
 six = [
-	[0,1],[0,4,],[1,5,],[2,5,],[3,4],[1,4],[1,1],[2,1],[2,2],[1.25,2],[1.25,3],[2,3],[3,2],[3,1],[2,0],[1.55,0],[2,-0.5],[1.5,-1],[1,-0.5],[1.45,0],[1,0]
+	[0,1],[0,4,],[1,5,],[2,5,],[3,4],[1,4],[1,1],[2,1],[2,2],[1.25,2],[1.25,3],[2,3],[3,2],[3,1],[2,0],[1,0]
 ];
 seven = [
 	[1,0],[1,1],[2,4],[0,4],[0,5],[3,5],[3,4],[2,2],[2,0]
@@ -95,13 +116,6 @@ seven = [
 eight = [
 	[0,1],[0,2],[.5,2.5],[0,3],[0,4],[1,5],[1.75,5],[1.75,4],[1,4],[1,3],[2,3],[2,5],[3,4],[3,3],[2.5,2.5],[3,2],[3,1],[2,0],[1.25,0],[1.25,1],[2,1],[2,2],[1,2],[1,0]
 ];
-nine = [
-	[1,0],[2,2],[2,4],[1,4],[1,3],[1.75,3],[1.75,2],[1,2],[0,3],[0,4],[1,5],[2,5],[3,4],[3,2],[2,0],[1.55,0],[2,-0.5],[1.5,-1],[1,-0.5],[1.45,0]
-];
-zero = [
-	[0,1],[0,4],[1,5],[2,5],[3,4],[3,1],[2,0],[2,4],[1,4],[1,1],[1.75,1],[1.75,0],[1,0]
-];
-
 target = [
 	[1.495, 5],
 	[1.25,4],
@@ -120,64 +134,42 @@ target = [
 	[1.5 - 1.25*sqrt(3),1.255]
 ];
 
-phi = (1 + sqrt(5)) / 2;
-side = 1/sqrt(pow(phi,2) + 1);
-
 color("", 0.95){
-//  union(){  
-  difference(){ 
-      union(){
+ difference(){
+// union(){
+   union(){
 	difference(){
-		ico_rec();
-		place([180,180,0]){two_digits(){polygon(one);polygon(six);}}
-		place([180,0,0]){polygon(eight);}
-		place([0,0,0]){two_digits(){polygon(one);polygon(three);}}
-		place([0,180,0]){polygon(five);}
+	oct_tri();
+	place([0,0,-45], 1/4){polygon(two);}
+	place([0,180,-45], 1/4){polygon(four);}
+	//center(45,135,-135,false){polygon(one);}
+	//center(-45,-135,45,true){polygon(eight);}
 	}
-	rotate([0,90,90]){
-	difference(){
-		ico_rec();
-		place([180,180,0]){polygon(seven);}
-		place([180,0,0]){two_digits(){polygon(one);polygon(seven);}}
-		place([0,0,0]){polygon(four);}
-		place([0,180,0]){two_digits(){polygon(one);polygon(four);}}
+	rotate(a=[90,180,0]){
+		difference(){
+			oct_tri();
+		place([0,0,-45], 1/4){polygon(seven);}
+		place([0,180,-45], 1/4){polygon(six);}
+		//center(135,165,-135,true){polygon(one);}
+		//center(-135,-165,45,false){polygon(eight);}
+		}
 	}
+	rotate(a=[90,-90,90]){
+		difference(){
+			oct_tri();
+		place([0,0,-45], 1/4){polygon(three);}
+		place([0,180,-45], 1/4){polygon(five);}
+		//center(-45,-75,45){polygon(one);}
+		//center(45,75,-135,false){polygon(eight);}
+		}
 	}
-	rotate([90,0,90]){
-	difference(){
-		ico_rec();
-		place([0,0,0]){two_digits(){polygon(one);polygon(nine);}}
-		place([0,180,0]){polygon(nine);}
-		place([180,180,0]){two_digits(){polygon(one);polygon(two);}}
-		place([180,0,0]){polygon(two);}
-	}
-	}
-     }
-     corner([atan(sqrt(2)),180,-45]){
-         two_digits(){polygon(two);polygon(zero);}
-     }
-     corner([atan(sqrt(2)),0,-45 + 180]){
+    }
+     corner([atan(sqrt(2)),180,45]){
          polygon(one);
      }
-     corner([atan(sqrt(2)),180,-45 + 180]){
-         two_digits(){polygon(one);polygon(five);}
-     }
-     corner([atan(sqrt(2)),0,-45]){
-	 polygon(six);
-     }
-     corner([atan(sqrt(2)),180,45]){
-         two_digits(){polygon(one);polygon(zero);}
-     }
      corner([atan(sqrt(2)),0,45 + 180]){
-         two_digits(){polygon(one);polygon(one);}
+         polygon(eight);
      }
-     corner([atan(sqrt(2)),180,45 + 180]){
-         two_digits(){polygon(one);polygon(eight);}
-     }
-     corner([atan(sqrt(2)),0,45]){
-         polygon(three);
-     }
-/*
-*/
+
   }
 }

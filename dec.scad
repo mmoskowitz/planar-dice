@@ -129,53 +129,53 @@ color("", 0.95){
       union(){
 	difference(){
 		ico_rec();
-		place([180,180,0]){two_digits(){polygon(one);polygon(six);}}
-		place([180,0,0]){polygon(eight);}
-		place([0,0,0]){two_digits(){polygon(one);polygon(three);}}
-		place([0,180,0]){polygon(five);}
+		place([0,0,0]){polygon(seven);}
+		place([0,180,0]){polygon(four);}
+		place([180,0,0]){polygon(seven);}
+		place([180,180,0]){polygon(four);}
 	}
 	rotate([0,90,90]){
 	difference(){
 		ico_rec();
-		place([180,180,0]){polygon(seven);}
-		place([180,0,0]){two_digits(){polygon(one);polygon(seven);}}
-		place([0,0,0]){polygon(four);}
-		place([0,180,0]){two_digits(){polygon(one);polygon(four);}}
+		place([0,0,0]){polygon(six);}
+		place([0,180,0]){polygon(three);}
+		place([180,0,0]){polygon(six);}
+		place([180,180,0]){polygon(three);}
 	}
 	}
 	rotate([90,0,90]){
 	difference(){
 		ico_rec();
-		place([0,0,0]){two_digits(){polygon(one);polygon(nine);}}
-		place([0,180,0]){polygon(nine);}
-		place([180,180,0]){two_digits(){polygon(one);polygon(two);}}
-		place([180,0,0]){polygon(two);}
+		place([0,0,0]){polygon(nine);}
+		place([0,180,0]){polygon(two);}
+		place([180,0,0]){polygon(nine);}
+		place([180,180,0]){polygon(two);}
 	}
 	}
      }
      corner([atan(sqrt(2)),180,-45]){
-         two_digits(){polygon(two);polygon(zero);}
+         polygon(five);
      }
      corner([atan(sqrt(2)),0,-45 + 180]){
-         polygon(one);
+         polygon(five);
      }
      corner([atan(sqrt(2)),180,-45 + 180]){
-         two_digits(){polygon(one);polygon(five);}
+	 polygon(zero);
      }
      corner([atan(sqrt(2)),0,-45]){
-	 polygon(six);
+	 polygon(zero);
      }
      corner([atan(sqrt(2)),180,45]){
-         two_digits(){polygon(one);polygon(zero);}
+	 polygon(eight);
      }
      corner([atan(sqrt(2)),0,45 + 180]){
-         two_digits(){polygon(one);polygon(one);}
+	 polygon(eight);
      }
      corner([atan(sqrt(2)),180,45 + 180]){
-         two_digits(){polygon(one);polygon(eight);}
+	 polygon(one);
      }
      corner([atan(sqrt(2)),0,45]){
-         polygon(three);
+         polygon(one);
      }
 /*
 */
