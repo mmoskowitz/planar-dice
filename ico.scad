@@ -39,12 +39,15 @@ f = diameter/36;
 
 
 module corner(angle=[atan(sqrt(2)),0,45], doclip=true){
+   f = diameter/27;
    rotate(angle){
      intersection(){
 //     union(){
        linear_extrude(height=diameter){
+        scale([f,f,f]){
 	translate([-1.5,-2.5,0]){
 		child(0);
+	}
 	}
        }
        rotate([-atan(sqrt(2)),0,0]){
